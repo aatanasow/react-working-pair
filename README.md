@@ -2,9 +2,8 @@
 
 Working Pair
 
-## Table of Content:
+## Table of Content:<!-- omit in toc -->
 
-- [Table of Content:](#table-of-content)
 - [About The App](#about-the-app)
 - [Technologies](#technologies)
 - [Setup](#setup)

@@ -1,11 +1,11 @@
-import { stringToArray, arrayToMatrix } from "./data";
+import { stringToArray, arrayToMatrix, replaceNull } from "./data";
 import { openModal } from "./modal";
-import { isValidDate } from "./date";
+import { isValidDate, isValidRange } from "./date";
 
 function readFile(e) {
   return new Promise((resolve, reject) => {
     const file = e.target.files[0];
-    console.log(file.name);
+    //console.log(file.name);
     const errors = [];
 
     const reader = new FileReader();
@@ -15,7 +15,9 @@ function readFile(e) {
       let dataMatrix = [];
       const dataArray = stringToArray(reader.result);
       dataMatrix = arrayToMatrix(dataArray);
-      console.log(dataMatrix);
+      //console.log(dataMatrix);
+
+      // check for errors in the data
       dataMatrix.forEach((row, index) => {
         if (row.length !== 4) {
           errors.push(`Missing data on row ${index + 1}`);
@@ -26,16 +28,22 @@ function readFile(e) {
           (!isValidDate(row[3]) && row[3] !== "NULL")
         ) {
           errors.push(`Incorrect date on row ${index + 1}`);
+        } else if (!isValidRange(row[2], row[3]) && row[3] !== "NULL") {
+          errors.push(`Incorrect date range on row ${index + 1}`);
         }
       });
 
+      // display errors
       if (errors.length) {
         errors.forEach((error) => console.error(error));
         openModal();
         reject(errors);
       }
 
-      resolve(dataMatrix);
+      // no errors -> replace NULL
+      let nullReplaced = replaceNull(dataMatrix);
+      //console.log(nullReplaced);
+      resolve(nullReplaced);
     };
     reader.onerror = reject;
   });

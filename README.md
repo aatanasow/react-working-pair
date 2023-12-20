@@ -2,7 +2,7 @@
 
 Working Pair
 
-## Table of Content:<!-- omit in toc -->
+## Table of Content: <!-- omit in toc -->
 
 - [About The App](#about-the-app)
 - [Technologies](#technologies)
@@ -28,7 +28,20 @@ I used `html`, `css`, `react`
 
 ## Approach
 
-...
+This application loads external CSV file (comma separated), parse the data to matrix, check for invalid input(s), sort the data by project, find all the pairs of employees worked on the same time and finally find the pair working for the longest period of time. The result is displayed in table.
+
+The CSV file with data in the following format:
+EmpID, ProjectID, DateFrom, DateTo
+
+> NOTE: I assume that DateTo is the last working day for the period
+
+It accept the following date formats:
+
+> ISO Date -> "2015-03-25" (The International Standard)
+>
+> Short Date -> "03/25/2015"
+>
+> Long Date -> "Mar 25 2015" or "25 Mar 2015"
 
 ## Status
 

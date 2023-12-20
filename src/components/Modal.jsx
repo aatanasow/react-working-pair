@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ errors }) => {
+function Modal({ errors }) {
   return (
     <div className="modal">
       <div className="modal-content">
@@ -11,6 +11,6 @@ const Modal = ({ errors }) => {
       </div>
     </div>
   );
-};
+}
 
 export default Modal;

@@ -1,7 +1,7 @@
 import React from "react";
 import TableRow from "./TableRow";
 
-const TableBody = ({ data }) => {
+function TableBody({ data }) {
   return (
     <tbody>
       {data.map((entry, index) => (
@@ -9,6 +9,6 @@ const TableBody = ({ data }) => {
       ))}
     </tbody>
   );
-};
+}
 
 export default TableBody;

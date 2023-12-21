@@ -5,7 +5,6 @@ import { isValidDate, isValidRange } from "./date";
 function readFile(e) {
   return new Promise((resolve, reject) => {
     const file = e.target.files[0];
-    //console.log(file.name);
     const errors = [];
 
     const reader = new FileReader();
@@ -15,7 +14,6 @@ function readFile(e) {
       let dataMatrix = [];
       const dataArray = stringToArray(reader.result);
       dataMatrix = arrayToMatrix(dataArray);
-      //console.log(dataMatrix);
 
       // check for errors in the data
       dataMatrix.forEach((row, index) => {
@@ -41,8 +39,7 @@ function readFile(e) {
       }
 
       // no errors -> replace NULL
-      let nullReplaced = replaceNull(dataMatrix);
-      //console.log(nullReplaced);
+      const nullReplaced = replaceNull(dataMatrix);
       resolve(nullReplaced);
     };
     reader.onerror = reject;

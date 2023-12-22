@@ -1,6 +1,11 @@
 import { stringToArray, arrayToMatrix, replaceNull } from "./data";
 import { openModal } from "./modal";
-import { isValidDate, isValidRange } from "./date";
+import {
+  isValidDate,
+  isValidRange,
+  CURRENT_DATE,
+  mergeOverlapData,
+} from "./date";
 
 function readFile(e) {
   return new Promise((resolve, reject) => {
@@ -28,6 +33,11 @@ function readFile(e) {
           errors.push(`Incorrect date on row ${index + 1}`);
         } else if (!isValidRange(row[2], row[3]) && row[3] !== "NULL") {
           errors.push(`Incorrect date range on row ${index + 1}`);
+        } else if (
+          new Date(row[2]) > CURRENT_DATE ||
+          (new Date(row[3]) > CURRENT_DATE && row[3] !== "NULL")
+        ) {
+          errors.push(`Date in the future on row ${index + 1}`);
         }
       });
 
@@ -38,9 +48,11 @@ function readFile(e) {
         reject(errors);
       }
 
-      // no errors -> replace NULL
+      // no errors -> replace NULL and merge overlapped data
       const nullReplaced = replaceNull(dataMatrix);
-      resolve(nullReplaced);
+      const mergedData = mergeOverlapData(nullReplaced);
+
+      resolve(mergedData);
     };
     reader.onerror = reject;
   });

@@ -1,4 +1,5 @@
 const DAY_IN_MILISEC = 1000 * 3600 * 24;
+const CURRENT_DATE = new Date();
 
 function isValidDate(string) {
   const date = new Date(string);
@@ -20,19 +21,10 @@ function countDays(dateStart, dateEnd) {
 }
 
 function findOverlapDays(arr, task) {
-  let i, j;
   const overlapArr = [];
-  for (i = 0; i < arr.length - 1; i++) {
-    for (j = i + 1; j < arr.length; j++) {
-      /* console.log(
-        arr[i][1],
-        "-",
-        arr[i][2],
-        " | ",
-        arr[j][1],
-        "-",
-        arr[j][2]
-      ); */
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      //console.log(arr[i][1], "-", arr[i][2], " | ", arr[j][1], "-", arr[j][2]);
 
       const range1Start = new Date(arr[i][1]);
       const range1End = new Date(arr[i][2]);
@@ -58,4 +50,34 @@ function findOverlapDays(arr, task) {
   return overlapArr;
 }
 
-export { isValidDate, isValidRange, findOverlapDays };
+function mergeOverlapData(arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i][0] === arr[j][0] && arr[i][1] === arr[j][1]) {
+        const range1Start = new Date(arr[i][2]);
+        const range1End = new Date(arr[i][3]);
+
+        const range2Start = new Date(arr[j][2]);
+        const range2End = new Date(arr[j][3]);
+
+        if (range1Start < range2End && range2Start < range1End) {
+          const minStart = new Date(Math.min(range1Start, range2Start));
+          const maxEnd = new Date(Math.max(range1End, range2End));
+          //console.log("Overlap Data found", minStart, " - ", maxEnd);
+          arr[i][2] = minStart.toJSON().slice(0, 10);
+          arr[i][3] = maxEnd.toJSON().slice(0, 10);
+          arr.splice(j, 1);
+        }
+      }
+    }
+  }
+  return arr;
+}
+
+export {
+  isValidDate,
+  isValidRange,
+  findOverlapDays,
+  mergeOverlapData,
+  CURRENT_DATE,
+};

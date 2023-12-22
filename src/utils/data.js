@@ -1,6 +1,4 @@
-import { findOverlapDays } from "./date";
-
-const CURRENT_DATE = new Date().toJSON().slice(0, 10);
+import { findOverlapDays, CURRENT_DATE } from "./date";
 
 function stringToArray(string) {
   return string.split(/(\r\n|\r|\n)/g);
@@ -14,7 +12,9 @@ function arrayToMatrix(array) {
 
 function replaceNull(matrix) {
   return matrix.map((row) =>
-    row.map((cell) => (cell === "NULL" ? CURRENT_DATE : cell))
+    row.map((cell) =>
+      cell === "NULL" ? CURRENT_DATE.toJSON().slice(0, 10) : cell
+    )
   );
 }
 
@@ -87,8 +87,8 @@ function findLongestPeriod(data) {
 export {
   stringToArray,
   arrayToMatrix,
-  combineDataByProject,
   replaceNull,
+  combineDataByProject,
   combineDataByPairs,
   checkOverlap,
   findLongestPeriod,

@@ -28,20 +28,35 @@ I used `html`, `css`, `react`
 
 ## Approach
 
-This application loads external CSV file (comma separated), parse the data to matrix, check for invalid input(s), sort the data by project, find all the pairs of employees worked on the same time and finally find the pair working for the longest period of time. The result is displayed in table.
+The application works in the following sequence:
 
-The CSV file with data in the following format:
+1. loads external CSV file (comma separated)
+2. parse the data to matrix
+3. check for invalid input(s)
+4. sort the data by project
+5. find all the pairs of employees worked on the same time
+6. find the pair working for the longest period of time
+7. result is displayed in two tables - Summary and Breakdown.
+
+The CSV file load data in the following format:
 EmpID, ProjectID, DateFrom, DateTo
 
-> NOTE: I assume that DateTo is the last working day for the period
+> Testing files are placed inside /src/data/ folder
 
 It accept the following date formats:
 
-> ISO Date -> "2015-03-25" (The International Standard)
->
-> Short Date -> "03/25/2015"
->
-> Long Date -> "Mar 25 2015" or "25 Mar 2015"
+1. ISO Date -> "2015-03-25" (The International Standard)
+2. Short Date -> "03/25/2015"
+3. Long Date -> "Mar 25 2015" or "25 Mar 2015"
+
+The valid data should meet the following criteria:
+
+1. There should be no missing field(s)
+2. All DateFrom fields should be valid date
+3. All DateTo fields should be valid date or NULL
+4. There should be no date in the future
+5. All periods should be valid - start date is before end date
+6. There shouldn't be no 2 or more overlapping periods for one and the same combination "employee" && "task". In this case they will be merged.
 
 ## Status
 

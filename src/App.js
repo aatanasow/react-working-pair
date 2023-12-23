@@ -16,10 +16,15 @@ function App() {
       .catch((error) => setErr(error));
   }
 
+  function resetData() {
+    setData([]);
+    setErr([]);
+  }
+
   return (
     <div className="App">
       <FileUpload changeHandler={handleFileUpload} />
-      <Modal errors={err} />
+      <Modal errors={err} changeHandler={resetData} />
 
       {!!data.length && !err.length && (
         <>

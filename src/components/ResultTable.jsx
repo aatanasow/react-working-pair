@@ -9,27 +9,38 @@ import {
 } from "../utils/data";
 
 function ResultTable({ data }) {
-  const combinedData = combineDataByProject(data);
-  const listWorkingPairs = checkOverlap(combinedData);
-  console.log(listWorkingPairs);
-  const finalData = combineDataByPairs(listWorkingPairs);
-  console.log(finalData);
-  const [summary, breakdown] = findLongestPeriod(finalData);
+  const combinedByProject = combineDataByProject(data);
+  const workingPairs = checkOverlap(combinedByProject);
+  let summary = [],
+    breakdown = [];
+  if (workingPairs.length !== 0) {
+    const combinedByPairs = combineDataByPairs(workingPairs);
+    [summary, breakdown] = findLongestPeriod(combinedByPairs);
+  }
 
   return (
     <div>
-      <Title title="Raw data" />
+      {/* <Title title="Raw data" />
       <Table
         head={["Employee ID", "Project ID", "Date From", "Date To"]}
         data={data}
-      />
-      <Title title="Summary" />
-      <Table
-        head={["Employee ID", "Employee ID", "Total days"]}
-        data={summary}
-      />
-      <Title title="Breakdown" />
-      <Table head={["Project ID", "Days"]} data={breakdown} />
+      /> */}
+      {!summary.length && (
+        <>
+          <Title title="No Working Pairs Found" />
+        </>
+      )}
+      {!!summary.length && (
+        <>
+          <Title title="Working Pair Summary" />
+          <Table
+            head={["Employee 1 ID", "Employee 2 ID", "Total days"]}
+            data={summary}
+          />
+          <Title title="Working Pair Breakdown" />
+          <Table head={["Project ID", "Days"]} data={breakdown} />
+        </>
+      )}
     </div>
   );
 }

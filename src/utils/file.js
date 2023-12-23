@@ -20,7 +20,7 @@ function readFile(e) {
       const dataArray = stringToArray(reader.result);
       dataMatrix = arrayToMatrix(dataArray);
 
-      // check for errors in the data
+      // data validation
       dataMatrix.forEach((row, index) => {
         if (row.length !== 4) {
           errors.push(`Missing data on row ${index + 1}`);

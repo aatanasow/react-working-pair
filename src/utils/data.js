@@ -30,7 +30,6 @@ function combineDataByProject(data) {
     }
     return acc;
   }, {});
-  //return Object.entries(dataReduced).map((arr) => [arr[0], ...arr[1]]);
   return Object.entries(dataReduced);
 }
 
@@ -49,14 +48,11 @@ function combineDataByPairs(data) {
     ...arr[0].split(":"),
     ...arr[1],
   ]);
-  //return Object.entries(dataReduced);
 }
 
 function checkOverlap(arr) {
-  //console.log(arr);
   let workingPairs = [];
   arr.forEach((el) => {
-    //console.log(el[1].length);
     if (el[1].length > 1) {
       let overlapDays = findOverlapDays(el[1], el[0]);
       if (overlapDays.length > 0) {
@@ -64,7 +60,6 @@ function checkOverlap(arr) {
       }
     }
   });
-  //console.log(workingPairs);
   return workingPairs;
 }
 
@@ -77,7 +72,6 @@ function findLongestPeriod(data) {
       topIndex = index;
     }
   });
-  //console.log("topDays", topDays, "-", topIndex);
   return [
     [[data[topIndex][0], data[topIndex][1], data[topIndex][2]]],
     data[topIndex][3],

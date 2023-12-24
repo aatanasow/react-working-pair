@@ -1,10 +1,23 @@
 import React from "react";
+import {
+  dragOverHandler,
+  dragEnterHandler,
+  dragLeaveHandler,
+} from "../utils/file";
 
-function FileUpload({ changeHandler }) {
+function FileUpload({ changeHandler, dropHandler }) {
   return (
     <div className="load">
-      <label htmlFor="file" className="container" id="container">
-        <span className="file-title">Choose a CSV file ...</span>
+      <label
+        htmlFor="file"
+        className="container"
+        id="container"
+        onDrop={dropHandler}
+        onDragEnter={dragEnterHandler}
+        onDragLeave={dragLeaveHandler}
+        onDragOver={dragOverHandler}
+      >
+        <span className="file-title">Drop or choose a CSV file ...</span>
         <input
           type="file"
           id="file"

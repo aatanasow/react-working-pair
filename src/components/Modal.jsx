@@ -1,4 +1,5 @@
 import React from "react";
+import Title from "./Title";
 
 function Modal({ errors, changeHandler }) {
   return (
@@ -7,6 +8,7 @@ function Modal({ errors, changeHandler }) {
         <span className="close" onClick={changeHandler}>
           &times;
         </span>
+        <Title title="Errors found in CSV file. Please fix them and try again." />
         {errors.map((error) => (
           <p key={error}>{error}</p>
         ))}

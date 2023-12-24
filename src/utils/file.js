@@ -7,10 +7,34 @@ import {
   mergeOverlapData,
 } from "./date";
 
+function validateData(data) {
+  const err = [];
+  data.forEach((row, index) => {
+    if (row.length !== 4) {
+      err.push(`Missing data on row ${index + 1}`);
+    } else if (row[2] === "NULL") {
+      err.push(`Start date on row ${index + 1} cannot be NULL`);
+    } else if (
+      !isValidDate(row[2]) ||
+      (!isValidDate(row[3]) && row[3] !== "NULL")
+    ) {
+      err.push(`Incorrect date on row ${index + 1}`);
+    } else if (!isValidRange(row[2], row[3]) && row[3] !== "NULL") {
+      err.push(`Incorrect date range on row ${index + 1}`);
+    } else if (
+      new Date(row[2]) > CURRENT_DATE ||
+      (new Date(row[3]) > CURRENT_DATE && row[3] !== "NULL")
+    ) {
+      err.push(`Date is in the future on row ${index + 1}`);
+    }
+  });
+  return err;
+}
+
 function readFile(e) {
   return new Promise((resolve, reject) => {
-    const file = e.target.files[0];
-    const errors = [];
+    const file = e;
+    let errors = [];
 
     const reader = new FileReader();
     reader.readAsText(file);
@@ -20,30 +44,11 @@ function readFile(e) {
       const dataArray = stringToArray(reader.result);
       dataMatrix = arrayToMatrix(dataArray);
 
-      // data validation
-      dataMatrix.forEach((row, index) => {
-        if (row.length !== 4) {
-          errors.push(`Missing data on row ${index + 1}`);
-        } else if (row[2] === "NULL") {
-          errors.push(`Start date on row ${index + 1} cannot be NULL`);
-        } else if (
-          !isValidDate(row[2]) ||
-          (!isValidDate(row[3]) && row[3] !== "NULL")
-        ) {
-          errors.push(`Incorrect date on row ${index + 1}`);
-        } else if (!isValidRange(row[2], row[3]) && row[3] !== "NULL") {
-          errors.push(`Incorrect date range on row ${index + 1}`);
-        } else if (
-          new Date(row[2]) > CURRENT_DATE ||
-          (new Date(row[3]) > CURRENT_DATE && row[3] !== "NULL")
-        ) {
-          errors.push(`Date in the future on row ${index + 1}`);
-        }
-      });
+      errors = validateData(dataMatrix);
 
       // display errors
       if (errors.length) {
-        errors.forEach((error) => console.error(error));
+        //errors.forEach((error) => console.error(error));
         openModal();
         reject(errors);
       }
@@ -58,4 +63,14 @@ function readFile(e) {
   });
 }
 
-export { readFile };
+function dragOverHandler(e) {
+  e.preventDefault();
+}
+function dragEnterHandler(e) {
+  document.getElementById("container").classList.add("drag-active");
+}
+function dragLeaveHandler(e) {
+  document.getElementById("container").classList.remove("drag-active");
+}
+
+export { readFile, dragOverHandler, dragEnterHandler, dragLeaveHandler };

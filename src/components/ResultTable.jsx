@@ -13,7 +13,7 @@ function ResultTable({ data }) {
   const workingPairs = checkOverlap(combinedByProject);
   let summary = [],
     breakdown = [];
-  if (workingPairs.length !== 0) {
+  if (workingPairs.length) {
     const combinedByPairs = combineDataByPairs(workingPairs);
     [summary, breakdown] = findLongestPeriod(combinedByPairs);
   }

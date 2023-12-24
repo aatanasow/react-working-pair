@@ -11,7 +11,14 @@ function App() {
 
   function handleFileUpload(e) {
     e.preventDefault();
-    readFile(e)
+    readFile(e.target.files[0])
+      .then((result) => setData(result))
+      .catch((error) => setErr(error));
+  }
+  function handleFileDrop(e) {
+    e.preventDefault();
+    document.getElementById("container").classList.remove("drag-active");
+    readFile(e.dataTransfer.files[0])
       .then((result) => setData(result))
       .catch((error) => setErr(error));
   }
@@ -23,7 +30,10 @@ function App() {
 
   return (
     <div className="App">
-      <FileUpload changeHandler={handleFileUpload} />
+      <FileUpload
+        changeHandler={handleFileUpload}
+        dropHandler={handleFileDrop}
+      />
       <Modal errors={err} changeHandler={resetData} />
 
       {!!data.length && !err.length && (
